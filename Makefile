@@ -3,6 +3,7 @@ build: concatenate minify
 concatenate:
 	cat src/broadphase.js\
 		src/brute-force.js\
+		src/hash-grid.js\
 		> broadphase.js
 
 minify:
