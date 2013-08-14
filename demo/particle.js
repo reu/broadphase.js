@@ -8,11 +8,11 @@
    * @property {Number} vy x velocity
    * @property {Number} vy y velocity
    */
-  function Particle(x, y) {
+  function Particle(x, y, radius) {
     this.x = x;
     this.y = y;
 
-    this.radius = random(5, 15);
+    this.radius = radius || 10;
 
     var theta = random(TWO_PI);
     this.vx = sin(theta) * 1;

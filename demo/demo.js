@@ -9,12 +9,30 @@
     collisionDetector: new BroadPhase.BruteForce,
 
     setup: function() {
+      this.particleCount = 100;
+      this.maxSize = 10;
+
+      this.gui = new dat.GUI;
+      this.gui.add(this, "particleCount", 10, 2000).onChange(this.populate.bind(this));
+      this.gui.add(this, "maxSize", 5, 100).onChange(function() {
+        for (var i = 0; i < this.particles.length; i++) {
+          this.particles[i].radius = random(5, this.maxSize);
+        }
+      }.bind(this));
+
+      this.populate();
+    },
+
+    populate: function() {
       this.particles = [];
 
-      for (var i = 0; i < 100; i++) {
-        var particle = new Particle(random(this.width), random(this.height));
+      for (var i = 0; i < this.particleCount; i++) {
+        var particle = new Particle(random(this.width), random(this.height), random(5, this.maxSize));
         this.particles.push(particle);
       }
+    },
+
+    resizeParticles: function() {
     },
 
     update: function() {
