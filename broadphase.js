@@ -34,6 +34,11 @@ window.BroadPhase = {};
   window.BroadPhase.BruteForce = BruteForce;
 })();
 (function() {
+  /**
+   * Implements the space partitioning algorithim for better performance.
+   * @see http://en.wikipedia.org/wiki/Space_partitioning
+   * @class HashGrid
+   */
   function HashGrid(width, height, cellWidth, cellHeight) {
     this.width = width;
     this.height = height;
@@ -51,6 +56,8 @@ window.BroadPhase = {};
   }
 
   /**
+   * Cleans the partitioning grid.
+   *
    * @method resetGrid
    * @private
    */
@@ -61,6 +68,12 @@ window.BroadPhase = {};
     }
   }
 
+  /**
+   * @method check
+   * @param {Array} particles thie list of particles to check collisions.
+   * @param {Function) resolver the collision resolver which will receive
+   *     each collision pair.
+   */
   HashGrid.prototype.check = function(particles, resolver) {
     var length = particles.length;
 
