@@ -65,7 +65,10 @@
       }
     },
 
-    resizeParticles: function() {
+    resize: function() {
+      if (this.collisionDetector instanceof BroadPhase.HashGrid) {
+        this.collisionDetector = new BroadPhase.HashGrid(this.width, this.height, this.cols, this.rows);
+      }
     },
 
     update: function() {
