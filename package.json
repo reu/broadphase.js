@@ -1,0 +1,21 @@
+{
+  "name": "broadphase.js",
+  "version": "0.0.1",
+  "description": "BroadPhase collision detection library.",
+  "main": "broadphase.js",
+  "repository": {
+    "type": "git",
+    "url": "github.com/reu/broadphase.js"
+  },
+  "keywords": [
+    "collision",
+    "detection",
+    "physics",
+    "game"
+  ],
+  "author": "Rodrigo Navarro",
+  "license": "MIT",
+  "devDependencies": {
+    "uglify-js": "latest"
+  }
+}
