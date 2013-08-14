@@ -82,10 +82,10 @@ window.BroadPhase = {};
     for (var i = 0; i < length; i++) {
       var particle = particles[i];
 
-      var xMin = Math.floor((particle.x - particle.radius) / this.cellWidth);
-      var xMax = Math.floor((particle.x + particle.radius) / this.cellWidth);
-      var yMin = Math.floor((particle.y - particle.radius) / this.cellHeight);
-      var yMax = Math.floor((particle.y + particle.radius) / this.cellHeight);
+      var xMin = ((particle.x - particle.radius) / this.cellWidth) << 0;
+      var xMax = ((particle.x + particle.radius) / this.cellWidth) << 0;
+      var yMin = ((particle.y - particle.radius) / this.cellHeight) << 0;
+      var yMax = ((particle.y + particle.radius) / this.cellHeight) << 0;
 
       for (var y = yMin; y <= yMax; y++) {
         var row = this.grid[y];
