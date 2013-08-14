@@ -13,6 +13,8 @@
       this.particleCount = 100;
       this.maxSize = 10;
 
+      this.showParticles = true;
+
       this.cols = 100;
       this.rows = 100;
       this.showGrid = false;
@@ -24,7 +26,8 @@
 
     configureGUI: function() {
       this.gui = new dat.GUI;
-      this.gui.add(this, "particleCount", 1, 2000).onChange(this.populate.bind(this));
+      this.gui.add(this, "showParticles");
+      this.gui.add(this, "particleCount", 1, 10000).onChange(this.populate.bind(this));
       this.gui.add(this, "maxSize", 5, 100).onChange(function() {
         for (var i = 0; i < this.particles.length; i++) {
           this.particles[i].radius = random(5, this.maxSize);
@@ -91,6 +94,8 @@
     },
 
     draw: function() {
+      if (!this.showParticles) return;
+
       this.fillStyle = this.strokeStyle = "red";
 
       for (var i = 0, length = this.particles.length; i < length; i++) {
