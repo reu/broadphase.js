@@ -97,17 +97,16 @@
     },
 
     draw: function() {
-      if (!this.showParticles) return;
+      if (this.showParticles) {
+        this.fillStyle = this.strokeStyle = "red";
+        for (var i = 0, length = this.particles.length; i < length; i++) {
+          var particle = this.particles[i];
 
-      this.fillStyle = this.strokeStyle = "red";
-
-      for (var i = 0, length = this.particles.length; i < length; i++) {
-        var particle = this.particles[i];
-
-        this.beginPath();
-        this.arc(particle.x, particle.y, particle.radius, 0, TWO_PI);
-        if (particle.colliding) this.fill();
-        this.stroke();
+          this.beginPath();
+          this.arc(particle.x, particle.y, particle.radius, 0, TWO_PI);
+          if (particle.colliding) this.fill();
+          this.stroke();
+        }
       }
 
       if (this.showGrid && this.collisionDetector instanceof BroadPhase.HashGrid) {
@@ -137,6 +136,7 @@
         }
       }
 
+      this.fillStyle = this.strokeStyle = "red";
       this.stroke();
     }
   });
