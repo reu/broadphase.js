@@ -20,6 +20,8 @@ window.BroadPhase = {};
   BruteForce.prototype.check = function(particles, resolver) {
     var length = particles.length;
 
+    if (length < 2) return;
+
     for (var i = 0; i < length; i++) {
       var p1 = particles[i];
 
