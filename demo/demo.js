@@ -19,6 +19,10 @@
       this.rows = 100;
       this.showGrid = false;
 
+      this.maxDepth = 5;
+      this.maxParticles = 10;
+      this.showQuadrants = false;
+
       this.configureGUI();
 
       this.populate();
@@ -34,13 +38,16 @@
         }
       }.bind(this));
 
-      this.gui.add(this, "detectorClass", ["BruteForce", "HashGrid"]).onChange(function(detectorClass) {
+      this.gui.add(this, "detectorClass", ["BruteForce", "HashGrid", "QuadTree"]).onChange(function(detectorClass) {
         switch (detectorClass) {
           case "BruteForce":
             this.collisionDetector = new BroadPhase.BruteForce;
             break;
           case "HashGrid":
             this.collisionDetector = new BroadPhase.HashGrid(this.width, this.height, this.cols, this.rows);
+            break;
+          case "QuadTree":
+            this.collisionDetector = new BroadPhase.QuadTree({ x: 0, y: 0, width: this.width, height: this.height }, this.maxDepth, this.maxParticles);
             break;
         }
       }.bind(this));
@@ -53,6 +60,17 @@
 
       hashMenu.add(this, "cols", 1, 500).onChange(function() {
         this.collisionDetector = new BroadPhase.HashGrid(this.width, this.height, this.cols, this.rows);
+      }.bind(this));
+
+
+      var quadMenu = this.gui.addFolder("QuadTree");
+      quadMenu.add(this, "showQuadrants");
+      quadMenu.add(this, "maxDepth", 1, 100).onChange(function() {
+        this.collisionDetector = new BroadPhase.QuadTree({ x: 0, y: 0, width: this.width, height: this.height }, this.maxDepth, this.maxParticles);
+      }.bind(this));
+
+      quadMenu.add(this, "maxParticles", 1, 1000).onChange(function() {
+        this.collisionDetector = new BroadPhase.QuadTree({ x: 0, y: 0, width: this.width, height: this.height }, this.maxDepth, this.maxParticles);
       }.bind(this));
     },
 
@@ -68,6 +86,10 @@
     resize: function() {
       if (this.collisionDetector instanceof BroadPhase.HashGrid) {
         this.collisionDetector = new BroadPhase.HashGrid(this.width, this.height, this.cols, this.rows);
+      }
+
+      if (this.collisionDetector instanceof BroadPhase.QuadTree) {
+        this.collisionDetector = new BroadPhase.QuadTree({ x: 0, y: 0, width: this.width, height: this.height }, this.maxDepth, this.maxParticles);
       }
     },
 
@@ -112,6 +134,10 @@
       if (this.showGrid && this.collisionDetector instanceof BroadPhase.HashGrid) {
         this.drawGrid();
       }
+
+      if (this.showQuadrants && this.collisionDetector instanceof BroadPhase.QuadTree) {
+        this.drawQuadrants();
+      }
     },
 
     drawGrid: function() {
@@ -138,6 +164,26 @@
 
       this.fillStyle = this.strokeStyle = "red";
       this.stroke();
+    },
+
+    drawQuadrants: function() {
+      var ctx = this;
+      this.strokeStyle = "red"
+
+      function drawTree(tree) {
+        ctx.rect(tree.bounds.x, tree.bounds.y, tree.bounds.width, tree.bounds.height);
+        ctx.stroke();
+
+        if (tree.nodes.length == 0) {
+          ctx.fillText(tree.particles.length, tree.bounds.x + 2, tree.bounds.y + 10);
+        }
+
+        for (var i = 0; i < tree.nodes.length; i++) {
+          drawTree(tree.nodes[i]);
+        }
+      }
+
+      drawTree(this.collisionDetector);
     }
   });
 })();

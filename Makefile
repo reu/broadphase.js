@@ -4,6 +4,7 @@ concatenate:
 	cat src/broadphase.js\
 		src/brute-force.js\
 		src/hash-grid.js\
+		src/quad-tree.js\
 		> broadphase.js
 
 minify:
