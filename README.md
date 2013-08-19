@@ -18,4 +18,4 @@ The library currently have three implemented methods of broad phase collision de
 
 2. **Hash grid**: divides the screen in a grid, so a object only needs to be checked which objects in the same cell that it is contained. This has a huge performance boost comparing to the brute force, given that the grid is well adjusted.
 
-3. **Quad tree**: tree like structure, which divides the screen as needed. Usually has a worse performance than the hash grid (as building and querying the tree is more expensive), but can be better when the objects are heavy grouped.
+3. **Quad tree**: tree like structure, which divides the screen as needed. When you have many moving objects, the quad tree has a (very) much worse performance than the hash grid (as the tree would need to be regenerated every frame), but can be better when the objects are most static and/or heavy grouped.
