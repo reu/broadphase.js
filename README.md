@@ -2,13 +2,13 @@
 
 BroadPhase.js is a small library that provides an easy and simple way to detect collisions in two dimensions.
 
-The term broad phase is often used in physics engines to describe the "first phase" of collision detection, as usually, collision detection algorithms are divided in two phases: the broad phase and the narrow phase.
+Collision detection algorithms are usually divided in two phases: the broad phase and the narrow phase.
 
-The broad phase is the simplest one, as it doesn't check precisely complex shapes, it just list all the _possible collisions_ using bounding circles, axis aligned bounding boxes, and other structures that resembles the real shape but are simpler, making it way less CPU intense to check lots of objects.
+The broad phase deals with _quantity_. It doesn't precisely check complex shapes collisions, instead, it just lists all the _possible collisions_ using simplified shapes, as bounding circles, axis aligned bounding boxes, and other geometrical structures that just resembles the real shape, thus making the collision checking against high number of object way less CPU intense.
 
-The narrow phase is where the precise collision check happens. It receives all the collision pairs from the broad phase and use a more precise (read, more CPU intensive) algorithm to check if the shapes are really colliding.
+The narrow phase deals with _quality_. As you can guess, this is where the precise collision check happens. The algorithm receives all the possible collision pairs from the broad phase and use a more precise (read: more CPU intensive) algorithm to check if the shapes are in fact colliding. This phase also returns the collision manifold when a collision does occur; this data is than used to resolve the collision.
 
-It is important to say that for majority of 2D games, using just the broad phase alone is good enough to give a great user experience.
+It is important to point that for the majority of 2D games, using just the broad phase alone is good enough to give a great user experience.
 
 ## Algorithms
 
