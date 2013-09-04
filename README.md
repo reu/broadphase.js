@@ -1,8 +1,8 @@
 # BroadPhase.js
 
-BroadPhase.js is a small library that provides an easy and simple way to detect collisions in two dimensions.
+BroadPhase.js is a small library that provides an easy and simple way to detect collisions between objects in a two dimensional system.
 
-Collision detection algorithms are usually divided in two phases: the broad phase and the narrow phase.
+The name broadphase was given because usually collision detection algorithms are divided in two phases: the _broad phase_ and the _narrow phase_.
 
 The broad phase deals with _quantity_. It doesn't precisely check complex shapes collisions, instead, it just lists all the _possible collisions_ using simplified shapes, as bounding circles, axis aligned bounding boxes, and other geometrical structures that just resembles the real shape, thus making the collision checking against high number of object way less CPU intense.
 
