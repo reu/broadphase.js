@@ -8,13 +8,13 @@ The broad phase deals with _quantity_. It doesn't precisely check complex shapes
 
 The narrow phase deals with _quality_. As you can guess, this is where the precise collision check happens. The algorithm receives all the possible collision pairs from the broad phase and use a more precise (read: more CPU intensive) algorithm to check if the shapes are in fact colliding. This phase also returns the collision manifold when a collision does occur; this data is than used to resolve the collision.
 
-It is important to point that for the majority of 2D games, using just the broad phase alone is good enough to give a great user experience.
+It is important to point out that if your game does not require physical accurate realism (which is probably the case for the majority of 2D games), using just the broad phase alone to check for collisions is good enough to give a great user experience.
 
 ## Algorithms
 
 The library currently implements three broad phase collision algorithms:
 
-1. **Brute force**: as the name suggests, just "brute force check everything agains everything", which means exactly that: check every object with every other object within the system. Even being a very naive method, it fits really well (and even better than the other methods) if you have few objects (usually < 100) on the screen.
+1. **Brute force**: as the name implies, just "brute force" check every object against every other object within the system. Even being a very naive method, it fits really well (and even better than the other methods) if you have few objects (usually < 100) on the screen.
 
 2. **Hash grid**: splits the screen in a grid, and then place each object in its matched cell. This way an object only needs to be checked against objects that belong to the same cell. This has a huge performance boost comparing to the brute force, given that the grid size is well tuned (bad tuned grid sizes could make this algorithm worse than brute force, given the overhead of populating the cells).
 
