@@ -19,3 +19,45 @@ The library currently implements three broad phase collision algorithms:
 2. **Hash grid**: splits the screen in a grid, and then place each object in its matched cell. This way an object only needs to be checked against objects that belong to the same cell. This has a huge performance boost comparing to the brute force, given that the grid size is well tuned (bad tuned grid sizes could make this algorithm worse than brute force, given the overhead of populating the cells).
 
 3. **Quad tree**: builds a tree like structure, spliting the screen in four quadrants on demand when the cell limit is reached. This method is usualy bad when you have many moving objects, as the tree would need to be rebuilt every frame, but can perform better than the others when the objects are most static and/or heavy grouped.
+
+## Usage
+
+Broadphase.js is framework agnostic and requires absolutely no dependencies. It provides a very simple and generic API to detect collisions. Eg:
+
+```javascript
+var particles = [
+  { x: 40, y: 30, radius: 10 },
+  { x: 14, y: 15, radius: 40 },
+  { x: 30, y: 10, radius: 15 }
+];
+
+var detector = new BroadPhase.BruteForce;
+
+var collisions = detector.check(particles, function(p1, p2) {
+  var dx = p1.x - p2.x;
+  var dy = p1.y - p2.y;
+  var radii = p1.radius + p2.radius;
+
+  return (dx*dx + dy*dy) < (radii*radii);
+});
+```
+
+All the detectors use the exactly same API, so it is very simple to swap then (even in realtime):
+
+```javascript
+var particles = [
+  { x: 40, y: 30, radius: 10 },
+  { x: 14, y: 15, radius: 40 },
+  { x: 30, y: 10, radius: 15 }
+];
+
+var detector = new BroadPhase.HashGrid(100, 100);
+
+var collisions = detector.check(particles, function(p1, p2) {
+  var dx = p1.x - p2.x;
+  var dy = p1.y - p2.y;
+  var radii = p1.radius + p2.radius;
+
+  return (dx*dx + dy*dy) < (radii*radii);
+});
+```
