@@ -1,4 +1,4 @@
-(function() {
+(function(BroadPhase, BruteForce) {
   /**
    * Implements a quad-tree structure to partition the space.
    * You will use this when your particles are grouped in a
@@ -178,4 +178,4 @@
   }
 
   BroadPhase.QuadTree = QuadTree;
-})();
+})(window.BroadPhase, window.BroadPhase.BruteForce);

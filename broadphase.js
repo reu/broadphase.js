@@ -1,5 +1,5 @@
 window.BroadPhase = {};
-(function() {
+(function(BroadPhase) {
   /**
    * The BruteForce collision detector class.
    * @class BruteForce
@@ -33,9 +33,9 @@ window.BroadPhase = {};
     }
   }
 
-  window.BroadPhase.BruteForce = BruteForce;
-})();
-(function() {
+  BroadPhase.BruteForce = BruteForce;
+})(window.BroadPhase);
+(function(BroadPhase, BruteForce) {
   /**
    * Implements the space partitioning algorithim for better performance.
    * @see http://en.wikipedia.org/wiki/Space_partitioning
@@ -52,7 +52,7 @@ window.BroadPhase = {};
     this.cols = Math.ceil(this.width / this.cellWidth);
 
     // We will need to use bruteforce check for each item inside a cell
-    this.bruteForce = new BroadPhase.BruteForce;
+    this.bruteForce = new BruteForce;
 
     this.grid = [];
   }
@@ -115,8 +115,8 @@ window.BroadPhase = {};
   }
 
   BroadPhase.HashGrid = HashGrid;
-})();
-(function() {
+})(window.BroadPhase, window.BroadPhase.BruteForce);
+(function(BroadPhase, BruteForce) {
   /**
    * Implements a quad-tree structure to partition the space.
    * You will use this when your particles are grouped in a
@@ -296,4 +296,4 @@ window.BroadPhase = {};
   }
 
   BroadPhase.QuadTree = QuadTree;
-})();
+})(window.BroadPhase, window.BroadPhase.BruteForce);

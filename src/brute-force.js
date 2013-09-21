@@ -1,4 +1,4 @@
-(function() {
+(function(BroadPhase) {
   /**
    * The BruteForce collision detector class.
    * @class BruteForce
@@ -32,5 +32,5 @@
     }
   }
 
-  window.BroadPhase.BruteForce = BruteForce;
-})();
+  BroadPhase.BruteForce = BruteForce;
+})(window.BroadPhase);

@@ -1,4 +1,4 @@
-(function() {
+(function(BroadPhase, Stats, Sketch, GUI) {
   var stats = new Stats();
   stats.domElement.style.position = "absolute";
   stats.domElement.style.left = "0px";
@@ -29,7 +29,7 @@
     },
 
     configureGUI: function() {
-      this.gui = new dat.GUI;
+      this.gui = new GUI;
       this.gui.add(this, "showParticles");
       this.gui.add(this, "particleCount", 1, 10000).onChange(this.populate.bind(this));
       this.gui.add(this, "maxSize", 5, 100).onChange(function() {
@@ -186,4 +186,4 @@
       drawTree(this.collisionDetector);
     }
   });
-})();
+})(BroadPhase, Stats, Sketch, dat.GUI);

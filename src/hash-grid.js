@@ -1,4 +1,4 @@
-(function() {
+(function(BroadPhase, BruteForce) {
   /**
    * Implements the space partitioning algorithim for better performance.
    * @see http://en.wikipedia.org/wiki/Space_partitioning
@@ -15,7 +15,7 @@
     this.cols = Math.ceil(this.width / this.cellWidth);
 
     // We will need to use bruteforce check for each item inside a cell
-    this.bruteForce = new BroadPhase.BruteForce;
+    this.bruteForce = new BruteForce;
 
     this.grid = [];
   }
@@ -78,4 +78,4 @@
   }
 
   BroadPhase.HashGrid = HashGrid;
-})();
+})(window.BroadPhase, window.BroadPhase.BruteForce);
