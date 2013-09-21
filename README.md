@@ -62,6 +62,10 @@ var collisions = detector.check(particles, function(p1, p2) {
 });
 ```
 
+## Demo
+
+A demonstration of the library in action can be seen here: http://reu.github.io/broadphase.js/. Note that to be able to check the real performance you must disable the "showParticles" option, so rendering won't affect the FPS calculation.
+
 ## License
 
 (The MIT License)
