@@ -8,17 +8,19 @@ window.BroadPhase = {};
   }
 
   /**
-   * The most basic implementation of collision detection,
-   * although it is suitable for lots of cases, specially
-   * if you have few particles (< 100) in yout system.
+   * The most basic implementation of collision detection, although it is suitable for lots of cases,
+   * specially if your system has few particles (< 100).
    *
    * @method check
    * @param {Array} particles thie list of particles to check collisions.
-   * @param {Function) resolver the collision resolver which will receive
-   *     each collision pair.
+   * @param {Function} comparator the function that, given two objects, return if they are
+   *     colliding or not.
+   * @param {Function} resolver the collision resolver which will receive each collision pair
+   *     occurence.
    */
-  BruteForce.prototype.check = function(particles, resolver) {
-    var length = particles.length;
+  BruteForce.prototype.check = function(particles, comparator, resolver) {
+    var length = particles.length,
+        collisions = [];
 
     if (length < 2) return;
 
@@ -28,9 +30,14 @@ window.BroadPhase = {};
       for (var j = i + 1; j < length; j++) {
         var p2 = particles[j];
 
-        if (p1.intersects(p2)) resolver(p1, p2);
+        if (comparator(p1, p2)) {
+          if (resolver) resolver(p1, p2);
+          collisions.push([p1, p2]);
+        }
       }
     }
+
+    return collisions;
   }
 
   BroadPhase.BruteForce = BruteForce;
@@ -71,13 +78,18 @@ window.BroadPhase = {};
   }
 
   /**
+   * Checks for collision using spatial grid hashing.
+   *
    * @method check
    * @param {Array} particles thie list of particles to check collisions.
-   * @param {Function) resolver the collision resolver which will receive
-   *     each collision pair.
+   * @param {Function} comparator the function that, given two objects, return if they are
+   *     colliding or not.
+   * @param {Function} resolver the collision resolver which will receive each collision pair
+   *     occurence.
    */
-  HashGrid.prototype.check = function(particles, resolver) {
-    var length = particles.length;
+  HashGrid.prototype.check = function(particles, comparator, resolver) {
+    var length = particles.length,
+        collisions = [];
 
     this.resetGrid();
 
@@ -109,24 +121,23 @@ window.BroadPhase = {};
         var col = row[x];
         if (!col) continue;
 
-        this.bruteForce.check(col, resolver);
+        collisions.concat(this.bruteForce.check(col, comparator, resolver));
       }
     }
+
+    return collisions;
   }
 
   BroadPhase.HashGrid = HashGrid;
 })(window.BroadPhase, window.BroadPhase.BruteForce);
 (function(BroadPhase, BruteForce) {
   /**
-   * Implements a quad-tree structure to partition the space.
-   * You will use this when your particles are grouped in a
-   * certain area.
+   * Implements a quad-tree structure to partition the space. You will want to use this when your
+   * particles are heavly grouped in certain areas.
    * @class QuadTree
    * @property {Rectangle} bounds
-   * @property {Number} maxDepth how many levels the tree will keep
-   *   dividing the space.
-   * @property {Number} maxParticles how many particles each node
-   *   can store before dividing up.
+   * @property {Number} maxDepth how many levels the tree will keep dividing the space.
+   * @property {Number} maxParticles how many particles each node can store before dividing up.
    */
   function QuadTree(bounds, maxDepth, maxParticles) {
     this.bounds = bounds;
@@ -272,18 +283,21 @@ window.BroadPhase = {};
   }
 
   /**
-   * Check for collisions and call the resolver callback for each
-   * one the occurs.
+   * Checks for collision using a quad tree spatial hashing.
    *
    * @method check
-   * @param {Array} particles
-   * @param {Funcion} resolver resolver the collision resolver which will receive
-   *     each collision pair.
+   * @param {Array} particles thie list of particles to check collisions.
+   * @param {Function} comparator the function that, given two objects, return if they are
+   *     colliding or not.
+   * @param {Function} resolver the collision resolver which will receive each collision pair
+   *     occurence.
    */
-  QuadTree.prototype.check = function(particles, resolver) {
+  QuadTree.prototype.check = function(particles, comparator, resolver) {
     this.clear();
 
-    var length = particles.length, i;
+    var length = particles.length,
+        collisions = [],
+        i;
 
     for (i = 0; i < length; i++) {
       this.insert(particles[i]);
@@ -291,7 +305,7 @@ window.BroadPhase = {};
 
     for (i = 0; i < length; i++) {
       var nearParticles = this.queryPossibleCollisions(particles[i]);
-      this.bruteForce.check(nearParticles, resolver);
+      collisions.concat(this.bruteForce.check(nearParticles, comparator, resolver));
     }
   }
 

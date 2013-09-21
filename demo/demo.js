@@ -112,9 +112,17 @@
 
     checkCollisions: function() {
       stats.begin();
-      this.collisionDetector.check(this.particles, function(p1, p2) {
-        p1.colliding = p2.colliding = true;
-      });
+
+      this.collisionDetector.check(
+        this.particles,
+        function(p1, p2) {
+          return p1.intersects(p2);
+        },
+        function(p1, p2) {
+          p1.colliding = p2.colliding = true;
+        }
+      );
+
       stats.end();
     },
 

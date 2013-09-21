@@ -1,14 +1,11 @@
 (function(BroadPhase, BruteForce) {
   /**
-   * Implements a quad-tree structure to partition the space.
-   * You will use this when your particles are grouped in a
-   * certain area.
+   * Implements a quad-tree structure to partition the space. You will want to use this when your
+   * particles are heavly grouped in certain areas.
    * @class QuadTree
    * @property {Rectangle} bounds
-   * @property {Number} maxDepth how many levels the tree will keep
-   *   dividing the space.
-   * @property {Number} maxParticles how many particles each node
-   *   can store before dividing up.
+   * @property {Number} maxDepth how many levels the tree will keep dividing the space.
+   * @property {Number} maxParticles how many particles each node can store before dividing up.
    */
   function QuadTree(bounds, maxDepth, maxParticles) {
     this.bounds = bounds;
@@ -154,18 +151,21 @@
   }
 
   /**
-   * Check for collisions and call the resolver callback for each
-   * one the occurs.
+   * Checks for collision using a quad tree spatial hashing.
    *
    * @method check
-   * @param {Array} particles
-   * @param {Funcion} resolver resolver the collision resolver which will receive
-   *     each collision pair.
+   * @param {Array} particles thie list of particles to check collisions.
+   * @param {Function} comparator the function that, given two objects, return if they are
+   *     colliding or not.
+   * @param {Function} resolver the collision resolver which will receive each collision pair
+   *     occurence.
    */
-  QuadTree.prototype.check = function(particles, resolver) {
+  QuadTree.prototype.check = function(particles, comparator, resolver) {
     this.clear();
 
-    var length = particles.length, i;
+    var length = particles.length,
+        collisions = [],
+        i;
 
     for (i = 0; i < length; i++) {
       this.insert(particles[i]);
@@ -173,7 +173,7 @@
 
     for (i = 0; i < length; i++) {
       var nearParticles = this.queryPossibleCollisions(particles[i]);
-      this.bruteForce.check(nearParticles, resolver);
+      collisions.concat(this.bruteForce.check(nearParticles, comparator, resolver));
     }
   }
 

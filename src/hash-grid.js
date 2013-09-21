@@ -34,13 +34,18 @@
   }
 
   /**
+   * Checks for collision using spatial grid hashing.
+   *
    * @method check
    * @param {Array} particles thie list of particles to check collisions.
-   * @param {Function) resolver the collision resolver which will receive
-   *     each collision pair.
+   * @param {Function} comparator the function that, given two objects, return if they are
+   *     colliding or not.
+   * @param {Function} resolver the collision resolver which will receive each collision pair
+   *     occurence.
    */
-  HashGrid.prototype.check = function(particles, resolver) {
-    var length = particles.length;
+  HashGrid.prototype.check = function(particles, comparator, resolver) {
+    var length = particles.length,
+        collisions = [];
 
     this.resetGrid();
 
@@ -72,9 +77,11 @@
         var col = row[x];
         if (!col) continue;
 
-        this.bruteForce.check(col, resolver);
+        collisions.concat(this.bruteForce.check(col, comparator, resolver));
       }
     }
+
+    return collisions;
   }
 
   BroadPhase.HashGrid = HashGrid;
