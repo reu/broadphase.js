@@ -93,7 +93,7 @@
       }
     },
 
-    update: function() {
+    integrate: function() {
       for (var i = 0, length = this.particles.length; i < length; i++) {
         var particle = this.particles[i];
 
@@ -193,5 +193,10 @@
 
       drawTree(this.collisionDetector);
     }
+  });
+
+  setTimeout(function update() {
+    demo.integrate();
+    setTimeout(update);
   });
 })(BroadPhase, Stats, Sketch, dat.GUI);
